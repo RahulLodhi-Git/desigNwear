@@ -1,0 +1,11 @@
+{
+  "name": "desig-n-wear",
+  "version": "1.0.0",
+  "description": "Its a node js project for creating and managing the apis.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rahul Lodhi",
+  "license": "ISC"
+}
