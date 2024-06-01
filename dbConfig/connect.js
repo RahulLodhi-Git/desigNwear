@@ -61,4 +61,3 @@ const dbQueryHandler = (queryString) => {
 }
 
 module.exports = { DBSingleConnection, DBPool, isDBConnected, dbQueryHandler }
-// module.exports = connection

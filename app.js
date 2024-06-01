@@ -24,10 +24,8 @@ app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
 
 const startServer = async () => {
-
     try {
         // write a code to connect DB
-
         await isDBConnected()
         app.listen(port, () => {
             console.log(`server is successfully running on localhost:${port} or 127.0.0.1:${port}`)
@@ -35,14 +33,6 @@ const startServer = async () => {
 
     } catch (err) {
         console.error(err);
-    }
-    try {
-
-        const dbResult = await dbQueryHandler('SELECT * FROM users').then()
-        console.log('dbResult', dbResult);
-    }
-    catch (err) {
-        console.log(err)
     }
 };
 
