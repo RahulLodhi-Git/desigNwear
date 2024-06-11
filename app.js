@@ -2,12 +2,12 @@ require('dotenv').config()
 const express = require('express');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
-const notFoundCustomError = require('./errors/not-found');
 const { isDBConnected, dbQueryHandler } = require('./dbConfig/connect');
-
-// const { DBPool, connectDB } = require('./dbConfig/connect');
-
-
+const authRouter = require('./routes/authRouter');
+const morgan = require('morgan');
+const { log } = require('./utils/helper');
+const version = 'v1'
+global.log = log // adding our custom log function in global object of js
 
 
 const app = express();
@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
     res.send('<h1><a href="/api-docs">Api Documentation</a></h1>')
 })
 
+app.use(morgan('tiny'))
+// routes
+app.use(`/api/${version}/auth`, authRouter)
 // error handler
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
