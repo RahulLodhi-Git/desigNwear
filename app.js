@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('express-async-errors')
 const express = require('express');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -7,7 +8,7 @@ const authRouter = require('./routes/authRouter');
 const morgan = require('morgan');
 const { log } = require('./utils/helper');
 const version = 'v1'
-global.log = log // adding our custom log function in global object of js
+global.log = log // adding our custom  console log function in global object of js for colorizing the console.
 
 
 const app = express();
