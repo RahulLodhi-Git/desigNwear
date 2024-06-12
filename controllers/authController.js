@@ -1,12 +1,11 @@
 const { StatusCodes } = require("http-status-codes")
-const { encryptText, createJWT, verifyJWT } = require("../utils/helper")
+const { encryptText, createJWT, attachedCookiesToResponse } = require("../utils/helper")
 const chalk = require("chalk")
 const { dbQueryHandler } = require("../dbConfig/connect")
 const BadRequest = require("../errors/bad-request")
 
 
 const register = async (req, res) => {
-    log.info(req.body)
     const { full_name, email, password } = req.body
     if (!email || !full_name || !password) {
         throw new BadRequest('Required parameters is missing')
@@ -19,12 +18,18 @@ const register = async (req, res) => {
     let user = await dbQueryHandler(`INSERT INTO user (full_name,email,password) VALUES ('${full_name}', '${email}', '${hashPassword}')`)
     if (user.result.affectedRows) {
         let tokenPayload = { name: full_name, email: email, id: user.result.insertId, role: 'user' }
-        let token = createJWT({ payload: tokenPayload })
-        return res.status(StatusCodes.CREATED).json({ status: true, statusCode: 201, message: 'user register successfully', user: { full_name, email, token } })
+        attachedCookiesToResponse({ res, user: tokenPayload })
+        return res.status(StatusCodes.CREATED).json({ status: true, statusCode: 201, message: 'user register successfully', user: { full_name, email } })
     }
 }
-const login = async (req, res) => {
 
+
+const login = async (req, res) => {
+    // Cookies that have not been signed
+    console.log('Cookies: ', req.cookies)
+
+    // Cookies that have been signed
+    console.log('Signed Cookies: ', req.signedCookies)
     return res.status(StatusCodes.CREATED).json({ user: 'login' })
 }
 

@@ -25,12 +25,24 @@ const createJWT = ({ payload }) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_LIFETIME })
     return token
 }
+
 const verifyJWT = (token) => jwt.verify(token, process.env.JWT_SECRET)
 
+const attachedCookiesToResponse = ({ res, user }) => {
+    let token = createJWT({ payload: user })
+    let oneDay = 1000 * 60 * 60 * 24
+    res.cookie('access_token', token, {
+        expires: new Date(Date.now() + oneDay),
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'Production',
+        signed: true
+    })
+}
 
 module.exports = {
     encryptText,
     log,
     createJWT,
-    verifyJWT
+    verifyJWT,
+    attachedCookiesToResponse
 }
