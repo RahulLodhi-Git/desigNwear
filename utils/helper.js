@@ -18,7 +18,7 @@ const encryptText = async (plainText, salt = 10) => {
 }
 
 const isPasswordMatched = async (plainText, hashText) => {
-    return await bcrypt.hash(plainText, hashText)
+    return await bcrypt.compare(plainText, hashText)
 }
 
 const createJWT = ({ payload }) => {
@@ -44,5 +44,6 @@ module.exports = {
     log,
     createJWT,
     verifyJWT,
-    attachedCookiesToResponse
+    attachedCookiesToResponse,
+    isPasswordMatched
 }
