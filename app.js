@@ -4,11 +4,12 @@ const express = require("express");
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const { isDBConnected } = require("./dbConfig/connect");
-const authRouter = require("./routes/authRouter");
 const morgan = require("morgan");
 const { log } = require("./utils/helper");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const version = "v1";
+const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter")
 global.log = log; // adding our custom  console log function in global object of js for colorizing the console.
 
 const app = express();
@@ -23,6 +24,8 @@ app.use(morgan("tiny"));
 app.use(cookieParser(process.env.JWT_SECRET))
 // routes
 app.use(`/api/${version}/auth`, authRouter);
+app.use(`/api/${version}/users`, userRouter);
+
 
 // error handler
 app.use(notFoundMiddleware);
