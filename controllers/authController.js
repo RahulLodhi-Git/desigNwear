@@ -3,7 +3,7 @@ const { encryptText, createJWT, attachedCookiesToResponse, verifyJWT, isPassword
 const chalk = require("chalk")
 const { dbQueryHandler } = require("../dbConfig/connect")
 const BadRequest = require("../errors/bad-request")
-const unAuthorizedError = require("../errors/unAuthorized")
+const unAuthenticatedError = require("../errors/unauthenticated")
 const notFoundCustomError = require("../errors/not-found")
 
 
@@ -19,7 +19,7 @@ const register = async (req, res) => {
     let hashPassword = await encryptText(password)
     let user = await dbQueryHandler(`INSERT INTO user (full_name,email,password) VALUES ('${full_name}', '${email}', '${hashPassword}')`)
     if (user.result.affectedRows) {
-        let tokenPayload = { name: full_name, email: email, id: user.result.insertId, role: 'user' }
+        let tokenPayload = { full_name: full_name, email: email, id: user.result.insertId, role: 'user' }
         attachedCookiesToResponse({ res, user: tokenPayload })  // set and send Cookies
         return res.status(StatusCodes.CREATED).json({ status: true, statusCode: 201, message: 'user register successfully', user: { full_name, email } })
     }
@@ -35,8 +35,8 @@ const login = async (req, res) => {
     if (user.result.length <= 0) throw new notFoundCustomError('User is not found with given email')
 
     let isPasswordValid = await isPasswordMatched(password, user.result[0].password)
-    if (!isPasswordValid) throw new unAuthorizedError('unauthorized')
-    let tokenPayload = { name: user.result[0].full_name, email: email, id: user.result[0].id, role: user.result[0].role }
+    if (!isPasswordValid) throw new unAuthenticatedError('Password is incorrect')
+    let tokenPayload = { full_name: user.result[0].full_name, email: email, id: user.result[0].id, role: user.result[0].role }
     attachedCookiesToResponse({ res, user: tokenPayload })
 
     return res.status(StatusCodes.OK).json({ status: true, statusCode: StatusCodes.OK, user: tokenPayload })
