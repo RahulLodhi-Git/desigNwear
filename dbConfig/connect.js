@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 const DBSingleConnection = mysql.createConnection({
-    host: 'mysqldb',
+    host: 'mysqldb',   // sql container name or sql service name which you define in docker-compose file(in my case mysqldb)
     user: 'root',
     password: '',
     database: 'desigNwear',
@@ -9,7 +9,7 @@ const DBSingleConnection = mysql.createConnection({
 
 // For pool connection
 const DBPool = mysql.createPool({
-    host: 'mysqldb',
+    host: 'mysqldb',  // sql container name or sql service name which you define in docker-compose file(in my case mysqldb)
     user: 'root',
     password: '',
     database: 'desigNwear',

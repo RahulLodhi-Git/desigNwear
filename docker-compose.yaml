@@ -12,7 +12,7 @@ services:
       - db:/var/lib/mysql
   
   server:
-    build: .
+    build: . # here you  can also refer the image name which we created previously by given image name( in our case "desginwear-server" )
     depends_on:
       - mysqldb
     restart: unless-stopped
