@@ -1,6 +1,6 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const DBSingleConnection = mysql.createConnection({
-    host: 'localhost',
+    host: 'mysqldb',
     user: 'root',
     password: '',
     database: 'desigNwear',
@@ -9,7 +9,7 @@ const DBSingleConnection = mysql.createConnection({
 
 // For pool connection
 const DBPool = mysql.createPool({
-    host: 'localhost',
+    host: 'mysqldb',
     user: 'root',
     password: '',
     database: 'desigNwear',
